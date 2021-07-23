@@ -137,12 +137,20 @@ make
 make install
 ```
 
-Dynamic module build will located in ```build/modules/ngx_http_vod_module.so```.
+Dynamic module so file is located in ```build/modules/ngx_http_vod_module.so```.
+
+### Load module in nginx 
+Load module in nginx by adding this line in the main nginx config file. 
+
+```nginx configuration
+load_module  '<Path to current nginx source location>/build/modules/ngx_http_vod_module.so';
+```
 
 ### Change service config values
 Set configuration values located in ```Docker/hls-streamer/config.nginx``` folder.
 
-##Install Rtmp_streamer
+
+## Install Rtmp_streamer
 ### Install python and python3
 ```shell
 sudo apt-get install python ffmpeg
