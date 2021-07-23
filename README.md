@@ -51,7 +51,7 @@ curl http://localhost:8081/stream/playlist1 #[Playlist_name/Folder_name]
 ```
 
 ### 5. HLS live link contains the name of the playlist/folder_name as hls manifest name. 
-You can view streaming playlist in vlc:
+After waiting for 30 second you can view streaming playlist in vlc:
 
 ```shell
 vlc http://127.0.0.1:8080/hls/playlist1.m3u8 #[Playlist_name/Folder_name]
