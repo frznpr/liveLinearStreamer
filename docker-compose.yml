@@ -1,0 +1,25 @@
+version: '3.3'
+
+services:
+  rtmp-live:
+    container_name: rtmp-live
+    build: ./Docker/rtmp-streamer
+    depends_on: [hls-streamer]
+    ports:
+      - 8081:8081
+    volumes:
+      - ./src:/var/www/html/liveLinearStreamer
+      - ./Playlists:/var/www/html/liveLinearStreamer/storage/original
+    working_dir: /var/www/html/liveLinearStreamer
+    command: gunicorn public.server:liveLinearStreamer --worker-class sanic.worker.GunicornWorker -t 0
+
+  hls-streamer:
+    container_name: hls-streamer
+    build: ./Docker/hls-streamer
+    ports:
+      - 1935:1935
+      - 8080:80
+    volumes:
+      - ./Docker/hls-streamer/config.nginx:/etc/nginx/nginx.conf
+      - ./src:/var/www/html/liveLinearStreamer
+    tty: true

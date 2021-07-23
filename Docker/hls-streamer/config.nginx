@@ -1,0 +1,45 @@
+events {
+    worker_connections 768;
+}
+
+rtmp {
+    server {
+        listen 1935;
+
+        # Pointing this to an SSD is better as this involves lots of IO
+        hls_path /var/www/html/liveLinearStreamer/storage/hls;
+
+        # This application is for splitting the stream into HLS fragments
+        application show {
+            live 		on; 	# Allows live input from above
+            interleave on;
+            wait_key on;
+
+            hls 		on; 	# Enable HTTP Live Streaming
+            hls_fragment	5s;
+            hls_playlist_length 25s;
+            hls_nested on;
+
+            hls_variant _480 BANDWIDTH=1152000; # Low bitrate, 480p resolution
+            hls_variant _720 BANDWIDTH=2048000; # High bitrate, HD 720p resolution
+
+        }
+    }
+}
+
+http {
+    default_type application/octet-stream;
+
+    server {
+        listen 80;
+        location /hls {
+            root /var/www/html/liveLinearStreamer/storage;
+        }
+    }
+
+    types {
+        application/vnd.apple.mpegurl m3u8;
+        video/mp2t ts;
+        text/html html;
+    }
+}
